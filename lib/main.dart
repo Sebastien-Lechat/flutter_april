@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_april/page2.dart';
 
 void main() {
   runApp(const MyApp());
@@ -95,16 +96,42 @@ class _MyHomePageState extends State<MyHomePage> {
           // horizontal).
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            const Text(
-              'You have pushed the button this many times:',
+            RichText(
+              text: const TextSpan(
+                  text: 'You have',
+                  style: TextStyle(color: Colors.black),
+                  children: <TextSpan>[
+                    TextSpan(
+                      text: ' pushed the button ',
+                      style: TextStyle(
+                        color: Colors.red,
+                        decoration: TextDecoration.underline,
+                        decorationColor: Colors.blue,
+                        decorationStyle: TextDecorationStyle.wavy,
+                      ),
+                    ),
+                    TextSpan(
+                      text: 'this many times:',
+                      style: TextStyle(color: Colors.yellow),
+                    ),
+                  ]),
             ),
             Text(
               '$_counter',
               style: Theme.of(context).textTheme.headline3,
             ),
             // Image.asset("abc.jpg"),
-            Image.network(
-                "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRnLMRFv-RArj9MuYTnMKUwDb5jfw0wvBd4mw&usqp=CAU"),
+            GestureDetector(
+                onTap: () {
+                  Navigator.push(context,
+                      MaterialPageRoute(builder: (context) => const Page2()));
+                },
+                child: SizedBox(
+                  width: MediaQuery.of(context).size.width * 0.8,
+                  child: Image.network(
+                      "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRnLMRFv-RArj9MuYTnMKUwDb5jfw0wvBd4mw&usqp=CAU",
+                      scale: 0.5),
+                )),
             ElevatedButton.icon(
               onPressed: () => true,
               icon: const Icon(
@@ -119,6 +146,7 @@ class _MyHomePageState extends State<MyHomePage> {
                     fontStyle: FontStyle.italic),
               ),
               style: ButtonStyle(
+                  fixedSize: MaterialStateProperty.all(const Size(240, 60)),
                   padding: MaterialStateProperty.all(const EdgeInsets.only(
                       left: 25, right: 25, top: 7, bottom: 10)),
                   backgroundColor: MaterialStateProperty.all(Colors.yellow),
