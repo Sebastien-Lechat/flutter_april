@@ -11,7 +11,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Demo',
+      title: 'Flutter April App',
       theme: ThemeData(
         // This is the theme of your application.
         //
@@ -22,7 +22,7 @@ class MyApp extends StatelessWidget {
         // or simply save your changes to "hot reload" in a Flutter IDE).
         // Notice that the counter didn't reset back to zero; the application
         // is not restarted.
-        primarySwatch: Colors.blue,
+        primarySwatch: Colors.red,
       ),
       home: const MyHomePage(title: 'Test'),
     );
@@ -98,19 +98,39 @@ class _MyHomePageState extends State<MyHomePage> {
             const Text(
               'You have pushed the button this many times:',
             ),
-            const Text(
-              'You have pushed the button this many times:',
-            ),
             Text(
               '$_counter',
-              style: Theme.of(context).textTheme.headline4,
+              style: Theme.of(context).textTheme.headline3,
+            ),
+            // Image.asset("abc.jpg"),
+            Image.network(
+                "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRnLMRFv-RArj9MuYTnMKUwDb5jfw0wvBd4mw&usqp=CAU"),
+            ElevatedButton.icon(
+              onPressed: () => true,
+              icon: const Icon(
+                Icons.add_box,
+                color: Colors.purple,
+              ),
+              label: const Text(
+                'Appuyer',
+                style: TextStyle(
+                    color: Colors.white,
+                    fontWeight: FontWeight.bold,
+                    fontStyle: FontStyle.italic),
+              ),
+              style: ButtonStyle(
+                  padding: MaterialStateProperty.all(const EdgeInsets.only(
+                      left: 25, right: 25, top: 7, bottom: 10)),
+                  backgroundColor: MaterialStateProperty.all(Colors.yellow),
+                  textStyle:
+                      MaterialStateProperty.all(const TextStyle(fontSize: 25))),
             ),
           ],
         ),
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: _incrementCounter,
-        backgroundColor: Colors.green,
+        backgroundColor: Colors.deepOrange,
         tooltip: 'Increment',
         child: const Icon(Icons.add),
       ), // This trailing comma makes auto-formatting nicer for build methods.
