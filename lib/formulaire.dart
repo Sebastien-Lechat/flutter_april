@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
-
-String titre = "Formulaire";
-String test = "";
+import 'package:rflutter_alert/rflutter_alert.dart';
 
 class Formulaire extends StatefulWidget {
   const Formulaire({Key? key}) : super(key: key);
@@ -11,6 +9,13 @@ class Formulaire extends StatefulWidget {
 }
 
 class _FormulaireState extends State<Formulaire> {
+  String titre = "Formulaire";
+  String _name = "";
+  String _email = "";
+  String _password = "";
+
+  final _formKey = GlobalKey<FormState>();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -20,28 +25,120 @@ class _FormulaireState extends State<Formulaire> {
       body: Container(
         margin: const EdgeInsets.only(top: 25),
         padding: const EdgeInsets.only(left: 35, right: 35),
-        child: Column(
-          children: [
-            TextFormField(
-              decoration: const InputDecoration(
-                icon: Icon(Icons.person),
-                labelText: "Name",
-                hintText: "Enter your name...",
+        child: Form(
+          key: _formKey,
+          child: Column(
+            children: [
+              TextFormField(
+                decoration: const InputDecoration(
+                  icon: Icon(Icons.person),
+                  labelText: "Name",
+                  hintText: "Enter your name...",
+                ),
+                onChanged: (value) {
+                  setState(() {
+                    _name = value;
+                  });
+                },
+                validator: (value) => value!.length < 3 || value.trim().isEmpty
+                    ? 'Name too short.'
+                    : null,
               ),
-              onChanged: (value) {
-                setState(() {
-                  test = value;
-                });
-              },
-            ),
-            Text(test),
-            ElevatedButton(
-              onPressed: () => print(test),
-              child: const Text("Validate"),
-            )
-          ],
+              TextFormField(
+                  decoration: const InputDecoration(
+                    icon: Icon(Icons.email),
+                    labelText: "Email",
+                    hintText: "Enter your email...",
+                  ),
+                  onChanged: (value) {
+                    setState(() {
+                      _email = value;
+                    });
+                  },
+                  validator: (value) {
+                    return value!.length < 6 || value.trim().isEmpty
+                        ? 'Email too short.'
+                        : !RegExp(r'^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$')
+                                .hasMatch(value)
+                            ? 'Invalid email address.'
+                            : null;
+                  }),
+              TextFormField(
+                decoration: const InputDecoration(
+                  icon: Icon(Icons.lock),
+                  labelText: "Password",
+                  hintText: "Enter your password...",
+                ),
+                obscureText: true,
+                onChanged: (value) {
+                  setState(() {
+                    _password = value;
+                  });
+                },
+                validator: (value) => value!.trim().isEmpty
+                    ? "Password can't be empty."
+                    : value.length < 8
+                        ? 'Password too short.'
+                        : null,
+              ),
+              DropdownButton<String>(
+                value: 'One',
+                icon: const Icon(Icons.arrow_downward),
+                elevation: 16,
+                style: const TextStyle(color: Colors.deepPurple),
+                underline: Container(
+                  height: 2,
+                  color: Colors.deepPurpleAccent,
+                ),
+                onChanged: (String? newValue) {
+                  setState(() {
+                    // dropdownValue = newValue!;
+                  });
+                },
+                items: <String>['One', 'Two', 'Free', 'Four']
+                    .map<DropdownMenuItem<String>>((String value) {
+                  return DropdownMenuItem<String>(
+                    value: value,
+                    child: Text(value),
+                  );
+                }).toList(),
+              ),
+              ElevatedButton(
+                onPressed: () {
+                  if (_formKey.currentState!.validate()) {
+                    _onBasicAlertPressed(context);
+                    _formKey.currentState!.setState(() {
+                      _name = "";
+                      _email = "";
+                      _password = "";
+                    });
+                  }
+                },
+                child: const Text("Validate"),
+              )
+            ],
+          ),
         ),
       ),
     );
   }
+}
+
+_onBasicAlertPressed(context) {
+  Alert(
+    context: context,
+    type: AlertType.success,
+    title: "Succès",
+    desc: "Le formulaire est correct !",
+    buttons: [
+      DialogButton(
+        child: const Text(
+          "Fermer",
+          style: TextStyle(color: Colors.white, fontSize: 20),
+        ),
+        onPressed: () => Navigator.pop(context),
+        width: 120,
+      )
+    ],
+  ).show();
 }
