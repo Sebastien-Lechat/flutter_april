@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_april/formulaire.dart';
 import 'package:flutter_april/page2.dart';
+import 'package:flutter_april/page3.dart';
 
 void main() {
   runApp(const MyApp());
@@ -123,8 +125,12 @@ class _MyHomePageState extends State<MyHomePage> {
             // Image.asset("abc.jpg"),
             GestureDetector(
                 onTap: () {
-                  Navigator.push(context,
-                      MaterialPageRoute(builder: (context) => const Page2()));
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const Formulaire(),
+                    ),
+                  );
                 },
                 child: SizedBox(
                   width: MediaQuery.of(context).size.width * 0.8,
