@@ -132,48 +132,6 @@ class _CarteState extends State<Carte> {
                                                     ? 'Password too short.'
                                                     : null,
                                       ),
-                                      DropdownButton<String>(
-                                        value: 'One',
-                                        icon: const Icon(Icons.arrow_downward),
-                                        elevation: 16,
-                                        style: const TextStyle(
-                                            color: Colors.deepPurple),
-                                        underline: Container(
-                                          height: 2,
-                                          color: Colors.deepPurpleAccent,
-                                        ),
-                                        onChanged: (String? newValue) {
-                                          setState(() {
-                                            // dropdownValue = newValue!;
-                                          });
-                                        },
-                                        items: <String>[
-                                          'One',
-                                          'Two',
-                                          'Free',
-                                          'Four'
-                                        ].map<DropdownMenuItem<String>>(
-                                            (String value) {
-                                          return DropdownMenuItem<String>(
-                                            value: value,
-                                            child: Text(value),
-                                          );
-                                        }).toList(),
-                                      ),
-                                      ElevatedButton(
-                                        onPressed: () {
-                                          if (_formKey.currentState!
-                                              .validate()) {
-                                            _onBasicAlertPressed(context);
-                                            _formKey.currentState!.setState(() {
-                                              _name = "";
-                                              _email = "";
-                                              _password = "";
-                                            });
-                                          }
-                                        },
-                                        child: const Text("Validate"),
-                                      )
                                     ],
                                   ),
                                 );
@@ -181,13 +139,15 @@ class _CarteState extends State<Carte> {
                               "Modifier",
                               "Annuler",
                               () {
-                                Navigator.pop(context);
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) => const Formulaire(),
-                                  ),
-                                );
+                                if (_formKey.currentState!.validate()) {
+                                  _onBasicAlertPressed(context);
+                                  _formKey.currentState!.setState(() {
+                                    _name = "";
+                                    _email = "";
+                                    _password = "";
+                                  });
+                                  Navigator.pop(context);
+                                }
                               },
                               () {
                                 Navigator.pop(context);
