@@ -11,15 +11,15 @@ class Carte extends StatefulWidget {
 
 class _CarteState extends State<Carte> {
   List<User> users = [
-    User("Sébastien", "123456", "seb@gmail.com"),
+    User("Sébastien", "12345678910", "seb@gmail.com"),
+    User("Al", "1234567", "alexis@gmail.com"),
+    User("Mourad", "12345678", "mourad@gmail.com"),
+    User("Chtéphane", "123456789", "pacpac@gmail.com"),
+    User("Sébastien", "12345678910", "seb@gmail.com"),
     User("Alex6", "1234567", "alexis@gmail.com"),
     User("Mourad", "12345678", "mourad@gmail.com"),
     User("Chtéphane", "123456789", "pacpac@gmail.com"),
-    User("Sébastien", "123456", "seb@gmail.com"),
-    User("Alex6", "1234567", "alexis@gmail.com"),
-    User("Mourad", "12345678", "mourad@gmail.com"),
-    User("Chtéphane", "123456789", "pacpac@gmail.com"),
-    User("Sébastien", "123456", "seb@gmail.com"),
+    User("Sébastien", "12345678910", "seb@gmail.com"),
     User("Alex6", "1234567", "alexis@gmail.com"),
     User("Mourad", "12345678", "mourad@gmail.com"),
     User("Chtéphane", "123456789", "pacpac@gmail.com"),
@@ -140,21 +140,27 @@ class _CarteState extends State<Carte> {
                 padding: const EdgeInsets.all(4),
                 child: Card(
                   child: ListTile(
-                    leading: const Icon(
-                      Icons.person,
-                      size: 45,
+                    leading: CircleAvatar(
+                      backgroundColor: Colors.green,
+                      child: Text(
+                        users[index].name[0],
+                        style: const TextStyle(fontSize: 28),
+                      ),
                     ),
                     title: Text(users[index].name),
                     subtitle: Text(users[index].email),
                     trailing: Row(
                       mainAxisSize: MainAxisSize.min,
                       children: [
-                        IconButton(
-                          icon: const Icon(Icons.edit),
-                          onPressed: () {
-                            dialog("Modifier", index);
-                          },
-                          color: Colors.blue,
+                        Visibility(
+                          visible: users[index].name.length > 3,
+                          child: IconButton(
+                            icon: const Icon(Icons.edit),
+                            onPressed: () {
+                              dialog("Modifier", index);
+                            },
+                            color: Colors.blue,
+                          ),
                         ),
                         IconButton(
                           icon: const Icon(Icons.delete),
