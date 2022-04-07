@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_april/formulaire.dart';
 import 'package:flutter_april/helpers/function.dart';
 import 'package:flutter_april/models/user_model.dart';
-import 'package:rflutter_alert/rflutter_alert.dart';
 
 class Carte extends StatefulWidget {
   const Carte({Key? key}) : super(key: key);
@@ -27,6 +25,96 @@ class _CarteState extends State<Carte> {
     User("Chtéphane", "123456789", "pacpac@gmail.com"),
   ];
 
+  void dialog(String action, int? index) {
+    final TextEditingController _nameController = TextEditingController(
+        text: index != null && action == "Modifier" ? users[index].name : "");
+    final TextEditingController _emailController = TextEditingController(
+        text: index != null && action == "Modifier" ? users[index].email : "");
+    final TextEditingController _passwordController = TextEditingController(
+        text:
+            index != null && action == "Modifier" ? users[index].password : "");
+
+    final _formKey = GlobalKey<FormState>();
+
+    const ShowConfirmAlertDialog().show(
+      context,
+      index != null && action == "Modifier" ? "Modification" : "Création",
+      StatefulBuilder(builder: (ctx2, setBottomSheetState) {
+        return Form(
+          key: _formKey,
+          child: Column(
+            children: [
+              TextFormField(
+                controller: _nameController,
+                decoration: const InputDecoration(
+                  icon: Icon(Icons.person),
+                  labelText: "Name",
+                  hintText: "Enter your name...",
+                ),
+                validator: (value) => value!.length < 3 || value.trim().isEmpty
+                    ? 'Name too short.'
+                    : null,
+              ),
+              TextFormField(
+                  controller: _emailController,
+                  decoration: const InputDecoration(
+                    icon: Icon(Icons.email),
+                    labelText: "Email",
+                    hintText: "Enter your email...",
+                  ),
+                  validator: (value) {
+                    return value!.length < 6 || value.trim().isEmpty
+                        ? 'Email too short.'
+                        : !RegExp(r'^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$')
+                                .hasMatch(value)
+                            ? 'Invalid email address.'
+                            : null;
+                  }),
+              TextFormField(
+                controller: _passwordController,
+                decoration: const InputDecoration(
+                  icon: Icon(Icons.lock),
+                  labelText: "Password",
+                  hintText: "Enter your password...",
+                ),
+                obscureText: true,
+                validator: (value) => value!.trim().isEmpty
+                    ? "Password can't be empty."
+                    : value.length < 8
+                        ? 'Password too short.'
+                        : null,
+              ),
+            ],
+          ),
+        );
+      }),
+      action,
+      "Annuler",
+      () {
+        if (_formKey.currentState!.validate()) {
+          if (action == "Modifier" && index != null) {
+            setState(() {
+              users[index].name = _nameController.text;
+              users[index].email = _emailController.text;
+              users[index].password = _passwordController.text;
+            });
+          } else {
+            setState(() {
+              users.add(
+                User(_nameController.text, _emailController.text,
+                    _passwordController.text),
+              );
+            });
+          }
+          Navigator.pop(context);
+        }
+      },
+      () {
+        Navigator.pop(context);
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -36,7 +124,9 @@ class _CarteState extends State<Carte> {
           Padding(
             padding: const EdgeInsets.all(10.0),
             child: IconButton(
-              onPressed: () => true,
+              onPressed: () {
+                dialog("Créer", null);
+              },
               icon: const Icon(Icons.add),
             ),
           )
@@ -62,89 +152,7 @@ class _CarteState extends State<Carte> {
                         IconButton(
                           icon: const Icon(Icons.edit),
                           onPressed: () {
-                            final TextEditingController _nameController =
-                                TextEditingController(text: users[index].name);
-                            final TextEditingController _emailController =
-                                TextEditingController(text: users[index].email);
-                            final TextEditingController _passwordController =
-                                TextEditingController(
-                                    text: users[index].password);
-
-                            final _formKey = GlobalKey<FormState>();
-
-                            const ShowConfirmAlertDialog().show(
-                              context,
-                              "Modification",
-                              StatefulBuilder(builder: (ctx2, setBottom) {
-                                return Form(
-                                  key: _formKey,
-                                  child: Column(
-                                    children: [
-                                      TextFormField(
-                                        controller: _nameController,
-                                        decoration: const InputDecoration(
-                                          icon: Icon(Icons.person),
-                                          labelText: "Name",
-                                          hintText: "Enter your name...",
-                                        ),
-                                        validator: (value) =>
-                                            value!.length < 3 ||
-                                                    value.trim().isEmpty
-                                                ? 'Name too short.'
-                                                : null,
-                                      ),
-                                      TextFormField(
-                                          controller: _emailController,
-                                          decoration: const InputDecoration(
-                                            icon: Icon(Icons.email),
-                                            labelText: "Email",
-                                            hintText: "Enter your email...",
-                                          ),
-                                          validator: (value) {
-                                            return value!.length < 6 ||
-                                                    value.trim().isEmpty
-                                                ? 'Email too short.'
-                                                : !RegExp(r'^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$')
-                                                        .hasMatch(value)
-                                                    ? 'Invalid email address.'
-                                                    : null;
-                                          }),
-                                      TextFormField(
-                                        controller: _passwordController,
-                                        decoration: const InputDecoration(
-                                          icon: Icon(Icons.lock),
-                                          labelText: "Password",
-                                          hintText: "Enter your password...",
-                                        ),
-                                        obscureText: true,
-                                        validator: (value) =>
-                                            value!.trim().isEmpty
-                                                ? "Password can't be empty."
-                                                : value.length < 8
-                                                    ? 'Password too short.'
-                                                    : null,
-                                      ),
-                                    ],
-                                  ),
-                                );
-                              }),
-                              "Modifier",
-                              "Annuler",
-                              () {
-                                if (_formKey.currentState!.validate()) {
-                                  setState(() {
-                                    users[index].name = _nameController.text;
-                                    users[index].email = _emailController.text;
-                                    users[index].password =
-                                        _passwordController.text;
-                                  });
-                                  Navigator.pop(context);
-                                }
-                              },
-                              () {
-                                Navigator.pop(context);
-                              },
-                            );
+                            dialog("Modifier", index);
                           },
                           color: Colors.blue,
                         ),
@@ -180,23 +188,4 @@ class _CarteState extends State<Carte> {
       ),
     );
   }
-}
-
-_onBasicAlertPressed(context) {
-  Alert(
-    context: context,
-    type: AlertType.success,
-    title: "Succès",
-    desc: "Le formulaire est correct !",
-    buttons: [
-      DialogButton(
-        child: const Text(
-          "Fermer",
-          style: TextStyle(color: Colors.white, fontSize: 20),
-        ),
-        onPressed: () => Navigator.pop(context),
-        width: 120,
-      )
-    ],
-  ).show();
 }
