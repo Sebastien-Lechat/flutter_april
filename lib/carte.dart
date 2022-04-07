@@ -62,9 +62,13 @@ class _CarteState extends State<Carte> {
                         IconButton(
                           icon: const Icon(Icons.edit),
                           onPressed: () {
-                            String _name = "";
-                            String _email = "";
-                            String _password = "";
+                            final TextEditingController _nameController =
+                                TextEditingController(text: users[index].name);
+                            final TextEditingController _emailController =
+                                TextEditingController(text: users[index].email);
+                            final TextEditingController _passwordController =
+                                TextEditingController(
+                                    text: users[index].password);
 
                             final _formKey = GlobalKey<FormState>();
 
@@ -77,16 +81,12 @@ class _CarteState extends State<Carte> {
                                   child: Column(
                                     children: [
                                       TextFormField(
+                                        controller: _nameController,
                                         decoration: const InputDecoration(
                                           icon: Icon(Icons.person),
                                           labelText: "Name",
                                           hintText: "Enter your name...",
                                         ),
-                                        onChanged: (value) {
-                                          setState(() {
-                                            _name = value;
-                                          });
-                                        },
                                         validator: (value) =>
                                             value!.length < 3 ||
                                                     value.trim().isEmpty
@@ -94,16 +94,12 @@ class _CarteState extends State<Carte> {
                                                 : null,
                                       ),
                                       TextFormField(
+                                          controller: _emailController,
                                           decoration: const InputDecoration(
                                             icon: Icon(Icons.email),
                                             labelText: "Email",
                                             hintText: "Enter your email...",
                                           ),
-                                          onChanged: (value) {
-                                            setState(() {
-                                              _email = value;
-                                            });
-                                          },
                                           validator: (value) {
                                             return value!.length < 6 ||
                                                     value.trim().isEmpty
@@ -114,17 +110,13 @@ class _CarteState extends State<Carte> {
                                                     : null;
                                           }),
                                       TextFormField(
+                                        controller: _passwordController,
                                         decoration: const InputDecoration(
                                           icon: Icon(Icons.lock),
                                           labelText: "Password",
                                           hintText: "Enter your password...",
                                         ),
                                         obscureText: true,
-                                        onChanged: (value) {
-                                          setState(() {
-                                            _password = value;
-                                          });
-                                        },
                                         validator: (value) =>
                                             value!.trim().isEmpty
                                                 ? "Password can't be empty."
@@ -140,11 +132,11 @@ class _CarteState extends State<Carte> {
                               "Annuler",
                               () {
                                 if (_formKey.currentState!.validate()) {
-                                  _onBasicAlertPressed(context);
-                                  _formKey.currentState!.setState(() {
-                                    _name = "";
-                                    _email = "";
-                                    _password = "";
+                                  setState(() {
+                                    users[index].name = _nameController.text;
+                                    users[index].email = _emailController.text;
+                                    users[index].password =
+                                        _passwordController.text;
                                   });
                                   Navigator.pop(context);
                                 }
