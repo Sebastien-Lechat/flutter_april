@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_april/calculatrice.dart';
 import 'package:flutter_april/carte.dart';
+import 'package:flutter_april/formulaire.dart';
 // import 'package:flutter_april/formulaire.dart';
 // import 'package:flutter_april/page2.dart';
 // import 'package:flutter_april/page3.dart';
@@ -79,6 +81,79 @@ class _MyHomePageState extends State<MyHomePage> {
         // the App.build method, and use it to set our appbar title.
         title: Center(child: Text(widget.title)),
       ),
+      drawer: Drawer(
+        child: ListView(
+          children: [
+            DrawerHeader(
+              decoration: const BoxDecoration(
+                color: Colors.green,
+              ),
+              child: Center(
+                child: Row(
+                  children: const [
+                    Expanded(
+                      child: Icon(
+                        Icons.account_circle,
+                        color: Colors.white,
+                        size: 40,
+                      ),
+                      flex: 2,
+                    ),
+                    Expanded(
+                      flex: 6,
+                      child: Text(
+                        "Lechat Sébastien",
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 16,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+            ListTile(
+              title: const Text("Home"),
+              leading: IconButton(
+                icon: const Icon(Icons.home),
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+              ),
+              onTap: () {
+                Navigator.of(context).pop();
+              },
+            ),
+            const Divider(
+              color: Colors.grey,
+            ),
+            ListTile(
+              title: const Text("Profile"),
+              leading: IconButton(
+                icon: const Icon(Icons.account_circle),
+                onPressed: () {},
+              ),
+              onTap: () {
+                Navigator.of(context).pop();
+              },
+            ),
+            const Divider(
+              color: Colors.grey,
+            ),
+            ListTile(
+              title: const Text("Contact"),
+              leading: IconButton(
+                icon: const Icon(Icons.contact_page),
+                onPressed: () {},
+              ),
+              onTap: () {
+                Navigator.of(context).pop();
+              },
+            )
+          ],
+        ),
+      ),
       body: Center(
         // Center is a layout widget. It takes a single child and positions it
         // in the middle of the parent.
@@ -129,7 +204,7 @@ class _MyHomePageState extends State<MyHomePage> {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => const Carte(),
+                      builder: (context) => const Calculatrice(),
                     ),
                   );
                 },

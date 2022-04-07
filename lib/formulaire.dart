@@ -10,9 +10,9 @@ class Formulaire extends StatefulWidget {
 
 class _FormulaireState extends State<Formulaire> {
   String titre = "Formulaire";
-  String _name = "";
-  String _email = "";
-  String _password = "";
+  final TextEditingController _nameController = TextEditingController();
+  final TextEditingController _emailController = TextEditingController();
+  final TextEditingController _passwordController = TextEditingController();
 
   final _formKey = GlobalKey<FormState>();
 
@@ -30,31 +30,23 @@ class _FormulaireState extends State<Formulaire> {
           child: Column(
             children: [
               TextFormField(
+                controller: _nameController,
                 decoration: const InputDecoration(
                   icon: Icon(Icons.person),
                   labelText: "Name",
                   hintText: "Enter your name...",
                 ),
-                onChanged: (value) {
-                  setState(() {
-                    _name = value;
-                  });
-                },
                 validator: (value) => value!.length < 3 || value.trim().isEmpty
                     ? 'Name too short.'
                     : null,
               ),
               TextFormField(
+                  controller: _emailController,
                   decoration: const InputDecoration(
                     icon: Icon(Icons.email),
                     labelText: "Email",
                     hintText: "Enter your email...",
                   ),
-                  onChanged: (value) {
-                    setState(() {
-                      _email = value;
-                    });
-                  },
                   validator: (value) {
                     return value!.length < 6 || value.trim().isEmpty
                         ? 'Email too short.'
@@ -64,17 +56,13 @@ class _FormulaireState extends State<Formulaire> {
                             : null;
                   }),
               TextFormField(
+                controller: _passwordController,
                 decoration: const InputDecoration(
                   icon: Icon(Icons.lock),
                   labelText: "Password",
                   hintText: "Enter your password...",
                 ),
                 obscureText: true,
-                onChanged: (value) {
-                  setState(() {
-                    _password = value;
-                  });
-                },
                 validator: (value) => value!.trim().isEmpty
                     ? "Password can't be empty."
                     : value.length < 8
@@ -106,11 +94,10 @@ class _FormulaireState extends State<Formulaire> {
               ElevatedButton(
                 onPressed: () {
                   if (_formKey.currentState!.validate()) {
-                    _onBasicAlertPressed(context);
-                    _formKey.currentState!.setState(() {
-                      _name = "";
-                      _email = "";
-                      _password = "";
+                    setState(() {
+                      _nameController.text = "";
+                      _emailController.text = "";
+                      _passwordController.text = "";
                     });
                   }
                 },

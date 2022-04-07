@@ -152,16 +152,6 @@ class _CarteState extends State<Carte> {
                     trailing: Row(
                       mainAxisSize: MainAxisSize.min,
                       children: [
-                        Visibility(
-                          visible: users[index].name.length > 3,
-                          child: IconButton(
-                            icon: const Icon(Icons.edit),
-                            onPressed: () {
-                              dialog("Modifier", index);
-                            },
-                            color: Colors.blue,
-                          ),
-                        ),
                         IconButton(
                           icon: const Icon(Icons.delete),
                           onPressed: () {
@@ -184,6 +174,19 @@ class _CarteState extends State<Carte> {
                             );
                           },
                           color: Colors.red,
+                        ),
+                        SizedBox(
+                          width: 45,
+                          child: Visibility(
+                            visible: users[index].name.length > 3,
+                            child: IconButton(
+                              icon: const Icon(Icons.edit),
+                              onPressed: () {
+                                dialog("Modifier", index);
+                              },
+                              color: Colors.blue,
+                            ),
+                          ),
                         ),
                       ],
                     ),
